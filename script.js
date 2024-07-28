@@ -1,16 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Selecting DOM elements
     const addButton = document.getElementById('add-task-btn');
     const taskInput = document.getElementById('task-input');
     const taskList = document.getElementById('task-list');
 
-    
-    function loadTasks() {
-        const storedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-        storedTasks.forEach(taskText => addTask(taskText, false));
-    }
+    // Add tasks function
+    function addTask() {
+        const taskText = taskInput.value.trim();
 
-    
-    function addTask(taskText, save = true) {
+        if (taskText === '') {
+            alert('Please enter a task.');
+            return;
+        }
+
         const taskListItem = document.createElement('li');
         taskListItem.textContent = taskText;
 
@@ -19,40 +21,20 @@ document.addEventListener('DOMContentLoaded', function () {
         removeButton.className = 'remove-btn';
         removeButton.onclick = function () {
             taskList.removeChild(taskListItem);
-            updateTasksInLocalStorage();
         };
+
         taskListItem.appendChild(removeButton);
         taskList.appendChild(taskListItem);
 
-        if (save) {
-            updateTasksInLocalStorage();
-        }
+        taskInput.value = '';
     }
 
-    
-    function updateTasksInLocalStorage() {
-        const tasks = Array.from(taskList.children).map(task => task.textContent);
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    }
-
-    addButton.addEventListener('click', function () {
-        const taskText = taskInput.value.trim();
-        if (taskText !== '') {
-            addTask(taskText);
-            taskInput.value = '';
-        }
-    });
+    //Event listeners
+    addButton.addEventListener('click', addTask);
 
     taskInput.addEventListener('keypress', function (event) {
         if (event.key === 'Enter') {
-            const taskText = taskInput.value.trim();
-            if (taskText !== '') {
-                addTask(taskText);
-                taskInput.value = '';
-            }
+            addTask();
         }
     });
-
-    
-    loadTasks();
 });
