@@ -3,11 +3,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const taskInput = document.getElementById('task-input');
     const taskList = document.getElementById('task-list');
 
+    
     function loadTasks() {
         const storedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
         storedTasks.forEach(taskText => addTask(taskText, false));
     }
 
+    
     function addTask(taskText, save = true) {
         const taskListItem = document.createElement('li');
         taskListItem.textContent = taskText;
@@ -17,36 +19,27 @@ document.addEventListener('DOMContentLoaded', function () {
         removeButton.className = 'remove-btn';
         removeButton.onclick = function () {
             taskList.removeChild(taskListItem);
-            updateTasksInLocalStorage(taskText, false);
+            updateTasksInLocalStorage();
         };
-
         taskListItem.appendChild(removeButton);
         taskList.appendChild(taskListItem);
 
         if (save) {
-            updateTasksInLocalStorage(taskText, true);
+            updateTasksInLocalStorage();
         }
     }
 
-    function updateTasksInLocalStorage(taskText, isAdd) {
-        const storedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-        if (isAdd) {
-            storedTasks.push(taskText);
-        } else {
-            storedTasks.splice(storedTasks.indexOf(taskText), 1);
-        }
-        localStorage.setItem('tasks', JSON.stringify(storedTasks));
+    
+    function updateTasksInLocalStorage() {
+        const tasks = Array.from(taskList.children).map(task => task.textContent);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
     }
-
-    loadTasks();
 
     addButton.addEventListener('click', function () {
         const taskText = taskInput.value.trim();
         if (taskText !== '') {
             addTask(taskText);
             taskInput.value = '';
-        } else {
-            alert('Please enter a task.');
         }
     });
 
@@ -56,9 +49,10 @@ document.addEventListener('DOMContentLoaded', function () {
             if (taskText !== '') {
                 addTask(taskText);
                 taskInput.value = '';
-            } else {
-                alert('Please enter a task.');
             }
         }
     });
+
+    
+    loadTasks();
 });
