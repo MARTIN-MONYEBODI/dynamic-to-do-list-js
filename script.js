@@ -12,20 +12,20 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Please enter a task.");
         } else {
             //Task Creation and Removal
-            let newTask = document.createElement('li');
-            newTask.textContent = taskText;
+            let li = document.createElement('li');
+            li.textContent = taskText;
 
-            let removeButton = document.createElement('button');
-            removeButton.textContent = "Remove";
-            removeButton.className = 'remove-btn';
+            let button = document.createElement('button');
+            button.textContent = "Remove";
+            button.className = 'remove-btn';
 
             removeButton.onclick = function() {
-                taskList.removeChild(newTask);
+                taskList.removeChild(li);
             };
 
-            newTask.appendChild(removeButton);
+            newTask.appendChild(button);
 
-            taskList.appendChild(newTask);
+            taskList.appendChild(li);
 
             taskInput.value = "";
         }
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-
+    
     addTask();
 });
     
