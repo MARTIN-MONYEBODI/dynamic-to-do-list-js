@@ -10,7 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (taskText === "") {
             alert("Please enter a task.");
-        } else {
+        }
+         
+        if(taskTest !=== ""){
             //Task Creation and Removal
             let li = document.createElement('li');
             li.textContent = taskText;
